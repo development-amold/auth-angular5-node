@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { TokenPayload, AuthenticationService } from '../_services/authentication.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../_services/authentication.service';
 
 
 @Component({
@@ -9,30 +9,23 @@ import { AuthenticationService } from '../_services/authentication.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  modelHash: any = {};
-  loading = false;
-  error = '';
-  
-  constructor(private router: Router, private authService: AuthenticationService) { }
+  credentials: TokenPayload = {
+    email: '',
+    password: ''
+};  
+
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
-    this.authService.logout();
+
   }
 
-  login(){
-    this.loading = true;
-    this.authService.login(this.modelHash.username,this.modelHash.password)
-    .subscribe(result => {
-      if(result == true)
-      {
-        this.router.navigate(["/"]);
-      }
-      else
-      {
-        this.error = "Username or password incorrect."
-        this.loading = false;
-      }
-    });
+  login() {
+    this.authService.login(this.credentials).subscribe(() => {
+      this.router.navigateByUrl('/profile');
+    }, (err) => {
+      console.error(err);
+    }); 
   }
 
 
