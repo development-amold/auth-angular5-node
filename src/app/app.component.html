@@ -1,12 +1,18 @@
 <div class="container">
     <div class="col-sm-8 col-sm-offset-2">
-        <nav class="navbar navbar-expand-sm bg-light">
-        <ul class="navbar-nav">
+      <nav class="navbar navbar-expand-sm bg-light">
+        <ul class="navbar-nav navbar-fixed-top navbar-inverse">
           <li class="nav-item">
-            <a class="nav-link" routerLink="/">Home</a>
+            <a class="nav-link" *ngIf="isHomeButtonVisible" routerLink="/">Home</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/logout">Logout</a>
+          </li>                    
         </ul>
       </nav>         
-        <router-outlet></router-outlet>
+      <router-outlet></router-outlet>
     </div>
 </div>
