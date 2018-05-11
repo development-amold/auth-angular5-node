@@ -11,6 +11,7 @@ var auth = jwt({
 
 var ctrlProfile = require('../controllers/profile');
 const ctrlAuth = require('../controllers/authentication');
+const ctrlHome = require('../controllers/home');
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
@@ -19,6 +20,8 @@ router.get('/profile', auth, ctrlProfile.profileRead);
 router.post('/register', ctrlAuth.register);
 
 router.post('/login', ctrlAuth.login);
+
+router.get('/home',ctrlHome.getusers)
 
 // console.log(expressListRoutes( router )) 
 

@@ -12,6 +12,10 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
+import { ButtonService } from './_services/button.service';
+import { HeaderComponent } from './header/header.component';
+import { HomeService } from './_services/home.service';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -20,12 +24,14 @@ import { LoginComponent } from './login/login.component';
     HomeComponent,
     RegisterComponent,
     ProfileComponent,
-    LoginComponent
+    LoginComponent,
+    HeaderComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, FormsModule, HttpClientModule
   ],
-  providers: [AuthenticationService, AuthGuardService],
+  providers: [AuthenticationService, AuthGuardService, ButtonService, HomeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

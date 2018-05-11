@@ -1,0 +1,16 @@
+<nav class="navbar navbar-expand-sm bg-light">
+  <ul class="navbar-nav navbar-fixed-top navbar-inverse">
+    <li class="nav-item">
+      <a class="nav-link" *ngIf="isHomeButtonVisible" routerLink="/">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" *ngIf="isLoginButtonVisible" routerLink="/login">Login</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="" *ngIf="!isLoginButtonVisible" (click)="onLogout()">Logout</a>
+    </li>                    
+    <li class="nav-item">
+        <a class="nav-link" *ngIf="!isLoginButtonVisible" routerLink="/profile">My Profile</a>
+      </li>                        
+  </ul>
+</nav>

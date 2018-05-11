@@ -4,6 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ButtonService } from './button.service';
 
 
 export interface UserDetails {
@@ -28,7 +31,7 @@ export interface TokenPayload {
 export class AuthenticationService {
   private token: string;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private _buttonService: ButtonService) {}
 
   private saveToken(token: string): void {
     localStorage.setItem('mean-token', token);
@@ -57,8 +60,18 @@ export class AuthenticationService {
   public isLoggedIn(): boolean {
     const user = this.getUserDetails();
     if (user) {
-      return user.exp > Date.now() / 1000;
+      if (user.exp > Date.now() / 1000)
+      {
+        this._buttonService.updateLoginStatus(true);
+        return true;
+      }
+      else
+      {
+        this._buttonService.updateLoginStatus(false);
+        return false;
+      }
     } else {
+      this._buttonService.updateLoginStatus(false);
       return false;
     }
   }
@@ -98,6 +111,7 @@ export class AuthenticationService {
 
   public logout(): void {
     this.token = '';
+    this._buttonService.updateLoginStatus(false);
     window.localStorage.removeItem('mean-token');
   }
 }

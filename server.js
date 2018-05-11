@@ -44,7 +44,7 @@ const express = require('express'),
 
     const app = express();
     app.use(bodyParser.json());
-    app.use(cors());    
+    app.use(cors());    //To be able to access our API from an angular application, we need to enable cors.
     
     const port = process.env.PORT || 4000;
     const server = app.listen(port,function(){

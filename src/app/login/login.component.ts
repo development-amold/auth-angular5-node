@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenPayload, AuthenticationService } from '../_services/authentication.service';
 import { Router } from '@angular/router';
+import { ButtonService } from '../_services/button.service';
 
 
 @Component({
@@ -14,7 +15,9 @@ export class LoginComponent implements OnInit {
     password: ''
 };  
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(private authService: AuthenticationService, private router: Router, private _buttonService: ButtonService) { 
+    _buttonService.changeHome(true);
+  }
 
   ngOnInit() {
 
@@ -27,6 +30,12 @@ export class LoginComponent implements OnInit {
       console.error(err);
     }); 
   }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigateByUrl("/");
+  }  
+
 
 
 }

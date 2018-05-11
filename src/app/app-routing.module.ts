@@ -6,6 +6,7 @@ import { AuthGuardService } from './_services/auth-guard.service';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 export const appRoutes: Routes = [
@@ -13,7 +14,8 @@ export const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent},
   { path: 'logout', component: LoginComponent},
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] }
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuardService] },
+  { path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
