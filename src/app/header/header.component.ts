@@ -16,7 +16,6 @@ export class HeaderComponent implements OnInit {
   constructor(private _buttonService: ButtonService, private authService: AuthenticationService, private router: Router){
     _buttonService.homeCurrentButton.subscribe(status => this.isHomeButtonVisible = status);
     _buttonService.loginCurrentButton.subscribe(status => {status == false ? this.isLoginButtonVisible = true : this.isLoginButtonVisible = false} );
-    console.log(this.isLoginButtonVisible)
   }
 
   ngOnInit() {

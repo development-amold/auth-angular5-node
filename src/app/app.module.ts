@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule} from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -26,10 +26,10 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     ProfileComponent,
     LoginComponent,
     HeaderComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
-    BrowserModule, AppRoutingModule, FormsModule, HttpClientModule
+    BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule ,HttpClientModule
   ],
   providers: [AuthenticationService, AuthGuardService, ButtonService, HomeService],
   bootstrap: [AppComponent]
