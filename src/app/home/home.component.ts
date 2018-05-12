@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../_services/user.service';
-import { User } from '../_models/user';
+import { ButtonService } from '../_services/button.service';
+import { AuthenticationService } from '../_services/authentication.service';
+import { HomeService } from '../_services/home.service';
+
 
 @Component({
   selector: 'app-home',
@@ -8,11 +10,16 @@ import { User } from '../_models/user';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  users: any;
 
-  constructor(private userService: UserService) { }
-  users: User[] = [];
+  constructor(private _buttonService: ButtonService, private authService: AuthenticationService, private _homeService: HomeService) {
+    this._buttonService.changeHome(false);
+    this.authService.isLoggedIn
+    this._homeService.getUsers().subscribe(users => this.users = users)
+   }
+
   ngOnInit() {
-    this.userService.getUsers().subscribe(users => this.users = users);
+    
   }
 
 }

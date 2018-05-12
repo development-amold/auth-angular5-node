@@ -1,42 +1,117 @@
 import { Injectable } from '@angular/core';
-import { Headers, Response, Http } from '@angular/http';
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map'
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
+import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ButtonService } from './button.service';
 
+
+export interface UserDetails {
+  id: string;
+  email: string;
+  name: string;
+  exp: number;
+  iat: number;
+}
+
+interface TokenResponse {
+  token: string;
+}
+
+export interface TokenPayload {
+  email: string;
+  password: string;
+  name?: string;
+}
 
 @Injectable()
 export class AuthenticationService {
-  public token: string;
-  constructor(private http: Http) {
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.token = currentUser && currentUser.token;
-   }
+  private token: string;
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
-    .map((response: Response) => {
-      // login successful if there's a jwt token in the response
-      let token = response.json() && response.json().token;
-      if (token) {
-          // set token property
-          this.token = token;
+  constructor(private http: HttpClient, private router: Router, private _buttonService: ButtonService) {}
 
-          // store username and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
-          // return true to indicate successful login
-          return true;
-      } else {
-          // return false to indicate failed login
-          return false;
-      }
-    });
+  private saveToken(token: string): void {
+    localStorage.setItem('mean-token', token);
+    this.token = token;
   }
 
-  logout(): void {
-      // clear token remove user from local storage to log user out
-      this.token = null;
-      localStorage.removeItem('currentUser');
-  }   
+  private getToken(): string {
+    if (!this.token) {
+      this.token = localStorage.getItem('mean-token');
+    }
+    return this.token;
+  }
 
+  public getUserDetails(): UserDetails {
+    const token = this.getToken();
+    let payload;
+    if (token) {
+      payload = token.split('.')[1];
+      payload = window.atob(payload);
+      return JSON.parse(payload);
+    } else {
+      return null;
+    }
+  }
+
+  public isLoggedIn(): boolean {
+    const user = this.getUserDetails();
+    if (user) {
+      if (user.exp > Date.now() / 1000)
+      {
+        this._buttonService.updateLoginStatus(true);
+        return true;
+      }
+      else
+      {
+        this._buttonService.updateLoginStatus(false);
+        return false;
+      }
+    } else {
+      this._buttonService.updateLoginStatus(false);
+      return false;
+    }
+  }
+
+  private request(method: 'post'|'get', type: 'login'|'register'|'profile', user?: TokenPayload): Observable<any> {
+    let base;
+    
+    if (method === 'post') {
+      base = this.http.post(`${environment.base_api_url}/api/${type}`, user);
+    } else {
+      base = this.http.get(`${environment.base_api_url}/api/${type}`, { headers: { Authorization: `Bearer ${this.getToken()}` }});
+    }
+
+    const request = base.pipe(
+      map((data: TokenResponse) => {
+        if (data.token) {
+          this.saveToken(data.token);
+        }
+        return data;
+      })
+    );
+
+    return request;
+  }
+
+  public register(user: TokenPayload): Observable<any> {
+    return this.request('post', 'register', user);
+  }
+
+  public login(user: TokenPayload): Observable<any> {
+    return this.request('post', 'login', user);
+  }
+
+  public profile(): Observable<any> {
+    return this.request('get', 'profile');
+  }
+
+  public logout(): void {
+    this.token = '';
+    this._buttonService.updateLoginStatus(false);
+    window.localStorage.removeItem('mean-token');
+  }
 }
