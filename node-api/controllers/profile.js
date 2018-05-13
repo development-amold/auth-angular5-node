@@ -11,6 +11,8 @@ module.exports.profileRead = function(req, res) {
     User
       .findById(req.payload.id)
       .exec(function(err, user) {
+        console.log("PAYLOAD")
+        console.log(user);            
         res.status(200).json(user);
       });
   }

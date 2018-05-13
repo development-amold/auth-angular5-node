@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
     'French',
     'German',
   ];
+  
   angForm: FormGroup;
   email: FormControl;
   password: FormControl;
