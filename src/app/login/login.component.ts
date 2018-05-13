@@ -38,7 +38,8 @@ export class LoginComponent implements OnInit {
   createFormControls() {
     this.email = new FormControl('', [
       Validators.required,
-      Validators.pattern("[^ @]*@[^ @]*")
+      Validators.pattern("^[A-Za-z0-9]+([\.-]?[a-zA-Z0-9]*)*@[a-zA-Z0-9]+([\.-]?[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]{2,3})+$")  // \w does not work here
+
     ]);
     this.password = new FormControl('', [
       Validators.required,

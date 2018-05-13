@@ -6,22 +6,22 @@
       <form (submit)="login()" [formGroup]="angForm" novalidate>
         <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
           <p *ngIf="email.errors.required">Email is required</p>
-          <p *ngIf="email.errors.pattern">The email address must contain at least the @ character</p>
+          <p *ngIf="email.errors.pattern">The email address must be valid</p>
         </div>        
         <div class="form-group">
           <label for="email">Email address</label>
           <input type="email" class="form-control" name="email" placeholder="Enter email" formControlName="email" [(ngModel)]="credentials.email" autofocus=true required>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password" [(ngModel)]="credentials.password">
-        </div>
         <div class="form-control-feedback"
           *ngIf="password.errors && (password.dirty || password.touched)">
           <p *ngIf="password.errors.required">Password is required</p>
           <p *ngIf="password.errors.minlength">Password must be 8 characters long, we need another {{password.errors.minlength.requiredLength - password.errors.minlength.actualLength}} characters </p>
-        </div>         
-        <button type="submit" class="btn btn-default">Sign in!</button>
+        </div>        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Password" formControlName="password" [(ngModel)]="credentials.password">
+        </div>
+        <button type="submit" class="btn btn-default" [disabled]="angForm.pristine || angForm.invalid">Sign in!</button>
       </form>
     </div>
   </div>
