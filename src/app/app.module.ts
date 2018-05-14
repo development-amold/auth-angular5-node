@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators, FormBuilder} from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 
+import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
+
 import { AppComponent } from './app.component';
 import { AuthenticationService } from './_services/authentication.service';
 import { AuthGuardService } from './_services/auth-guard.service';
@@ -29,9 +31,9 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     PageNotFoundComponent,
   ],
   imports: [
-    BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule ,HttpClientModule
+    BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule ,HttpClientModule, FlashMessagesModule.forRoot()
   ],
-  providers: [AuthenticationService, AuthGuardService, ButtonService, HomeService],
+  providers: [AuthenticationService, AuthGuardService, ButtonService, HomeService, FlashMessagesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

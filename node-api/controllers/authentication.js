@@ -3,13 +3,12 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 var sendJSONresponse = function(res, status, content) {
-  res.status(status);
-  res.json(content);
+  res.status(status).json(content);
 };
 
 module.exports.register = function(req, res) {
   if(!req.body.name || !req.body.email || !req.body.password) {
-    sendJSONresponse(res, 400, {
+    sendJSONresponse(res, 422, {
       "message": "All fields required"
     });
     return;
@@ -33,12 +32,12 @@ module.exports.register = function(req, res) {
 
 module.exports.login = function(req, res) {
 
-  // if(!req.body.email || !req.body.password) {
-  //   sendJSONresponse(res, 400, {
-  //     "message": "All fields required"
-  //   });
-  //   return;
-  // }
+  if(!req.body.email || !req.body.password) {
+    sendJSONresponse(res, 422, {  // 422 - Unprocessable entity
+      "message": "All fields required"
+    });
+    return;
+  }
 
   passport.authenticate('local', function(err, user, info){
     var token;

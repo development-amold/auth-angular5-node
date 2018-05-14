@@ -3,7 +3,7 @@ import { TokenPayload, AuthenticationService } from '../_services/authentication
 import { Router } from '@angular/router';
 import { ButtonService } from '../_services/button.service';
 import { FormGroup,  FormBuilder,  Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
     password: ''
   };  
 
+  serverErrMsg: string;
+
   langs: string[] = [
     'English',
     'French',
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
   password: FormControl;
   language: FormControl;
 
-  constructor(private authService: AuthenticationService, private router: Router, private _buttonService: ButtonService) {   
+  constructor(private authService: AuthenticationService, private router: Router, private _buttonService: ButtonService, private _flashMessageService: FlashMessagesService) {   
     _buttonService.changeHome(true);
   }
 
@@ -61,7 +63,9 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.credentials).subscribe(() => {
       this.router.navigateByUrl('/profile');
     }, (err) => {
-      console.error(err);
+      // console.error(err.message);
+      this._flashMessageService.show(err.error.message, { cssClass: 'alert-danger', timeout: 3000 });
+      this.serverErrMsg = err.error.message;
     }); 
   }
 

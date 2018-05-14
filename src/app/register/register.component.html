@@ -4,6 +4,7 @@
         <h1>Register</h1>
         <p class="lead">Already a member? Please <a routerLink="/login">log in</a> instead.</p>
         <form (submit)="register()" [formGroup]="angForm">
+          <flash-messages></flash-messages>
           <div class="form-control-feedback" *ngIf="name.errors && (name.dirty || name.touched)">
               <p *ngIf="name.errors.required">Name is required</p>
             </div>          

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService, TokenPayload } from '../_services/authentication.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   templateUrl: './register.component.html'
@@ -25,7 +26,7 @@ export class RegisterComponent {
   password: FormControl;
   language: FormControl;
 
-  constructor(private authService: AuthenticationService, private router: Router) {}
+  constructor(private authService: AuthenticationService, private router: Router, private _flashMessageService: FlashMessagesService) {}
 
   ngOnInit() {
     this.createFormControls();
@@ -62,7 +63,8 @@ export class RegisterComponent {
     this.authService.register(this.credentials).subscribe(() => {
       this.router.navigateByUrl('/profile');
     }, (err) => {
-      console.error(err);
+      // console.error(err);
+      this._flashMessageService.show(err.error.message, { cssClass: 'alert-danger', timeout: 3000 });
     });
   }
 }

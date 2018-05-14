@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "angular2-flash-messages": "^2.0.5",
     "config": "^1.30.0",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",

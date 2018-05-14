@@ -4,6 +4,7 @@
       <h1 class="form-signin-heading">Sign in</h1>
       <p class="lead">Not a member? Please <a routerLink="/register">register</a> instead.</p>
       <form (submit)="login()" [formGroup]="angForm" novalidate>
+        <flash-messages></flash-messages>
         <div class="form-control-feedback" *ngIf="email.errors && (email.dirty || email.touched)">
           <p *ngIf="email.errors.required">Email is required</p>
           <p *ngIf="email.errors.pattern">The email address must be valid</p>
